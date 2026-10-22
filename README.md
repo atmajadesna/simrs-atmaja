@@ -39,6 +39,22 @@ tiga aplikasi terpisah.
 5. **Kasir** — tagihan otomatis dari tarif poli + harga obat, dengan penjamin BPJS,
    asuransi swasta, atau umum.
 
+## Antarmuka
+
+Dibuat untuk dipakai sambil berdiri di loket, bukan dibaca santai di meja:
+
+- **Tidak ada huruf di bawah 14px.** Teks isi 17px dengan tinggi baris 1,65; angka
+  ringkasan 34–44px.
+- **Sasaran sentuh minimal 44×44px**, tombol utama 48px, kolom isian 50px.
+- **Satu warna aksen** (hijau pinus) untuk tindakan; amber hanya untuk status menunggu,
+  merah hanya untuk stok habis. Warna tidak dipakai sebagai hiasan.
+- **Enam tab berlabel** di atas halaman; di ponsel menjadi kisi 3×2 agar semua menu
+  terlihat tanpa menggeser.
+- **Angka rata lebar** (tabular) supaya lebar kolom tidak melompat saat nilai berubah.
+- **Umpan balik singkat** di bawah layar, hilang sendiri setelah 4,5 detik.
+- Tabel yang panjang menggeser di dalam bingkainya sendiri, bukan menyeret seluruh
+  halaman.
+
 ## Poin Teknis
 
 **Satu sumber data, banyak tampilan.** Seluruh keadaan disimpan pada satu objek

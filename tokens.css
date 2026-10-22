@@ -1,72 +1,59 @@
-/* Hallmark · macrostructure: Bento Grid · tone: clinical-utilitarian · anchor hue: teal
- * theme: Cobalt (tuned) · paper oklch(97.5% 0.005 220) · accent oklch(45% 0.09 195)
- * display: Space Grotesk · body: Space Grotesk · mono: JetBrains Mono
- * Hallmark · pre-emit critique: P5 H4 E4 S5 R5 V4
+/* SIMRS Atmaja — token desain
+ * Arah: Swiss / dokumen konsol. Tenang, lapang, kontras tinggi.
+ * Sasaran pembaca: staf dan pengunjung dewasa (25 tahun ke atas).
  */
 
 :root {
-  /* kertas klinis */
-  --paper: oklch(97.5% 0.005 220);
-  --paper-2: oklch(94.5% 0.008 220);
-  --paper-3: oklch(90% 0.01 220);
-  --putih: oklch(100% 0 0);
+  /* ---- warna ---- */
+  --kertas: #f7f5f0;        /* latar halaman, putih hangat */
+  --permukaan: #ffffff;     /* kartu */
+  --permukaan-2: #fbfaf7;   /* kepala tabel, blok tenang */
+  --garis: #e3dfd4;         /* garis pemisah */
+  --garis-tua: #cfc9ba;
 
-  /* tinta */
-  --ink: oklch(25% 0.02 245);
-  --ink-2: oklch(42% 0.018 245);
-  --ink-3: oklch(58% 0.015 245);
+  --tinta: #17211e;         /* teks utama */
+  --tinta-2: #46524d;       /* teks kedua */
+  --tinta-3: #626d68;       /* keterangan, tetap lolos 4.5:1 */
 
-  /* aksen */
-  --teal: oklch(45% 0.09 195);
-  --teal-terang: oklch(58% 0.1 195);
-  --teal-soft: oklch(45% 0.09 195 / 0.1);
-  --biru: oklch(50% 0.12 255);
-  --biru-soft: oklch(50% 0.12 255 / 0.1);
+  --teal: #1b5e4f;          /* warna utama: hijau pinus */
+  --teal-tua: #14483c;
+  --teal-soft: #e5efeb;     /* latar lembut untuk pilihan aktif */
+  --teal-garis: #b9d3ca;
 
-  /* status */
-  --hijau: oklch(48% 0.11 155);
-  --hijau-soft: oklch(48% 0.11 155 / 0.12);
-  --amber: oklch(62% 0.13 75);
-  --amber-soft: oklch(62% 0.13 75 / 0.14);
-  --merah: oklch(52% 0.17 25);
-  --merah-soft: oklch(52% 0.17 25 / 0.12);
+  --amber: #8f5410;         /* perhatian */
+  --amber-soft: #fbf0dd;
+  --merah: #9b2c2c;         /* bahaya, habis */
+  --merah-soft: #fbe9e7;
 
-  /* garis */
-  --line: oklch(25% 0.02 245 / 0.12);
-  --line-strong: oklch(25% 0.02 245 / 0.24);
-  --focus: oklch(48% 0.12 250);
+  /* ---- huruf ---- */
+  --font-ui: "Lexend", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
 
-  /* huruf */
-  --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "Space Grotesk", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --teks-xs: 0.875rem;      /* 14px — batas bawah, tidak ada yang lebih kecil */
+  --teks-sm: 0.9375rem;     /* 15px */
+  --teks-md: 1.0625rem;     /* 17px — teks isi */
+  --teks-lg: 1.1875rem;     /* 19px */
+  --teks-xl: 1.4375rem;     /* 23px */
+  --teks-2xl: 1.875rem;     /* 30px */
+  --teks-3xl: clamp(1.875rem, 3.2vw, 2.375rem);
 
-  /* ukuran */
-  --text-2xs: 0.6875rem;
-  --text-xs: 0.75rem;
-  --text-sm: 0.8125rem;
-  --text-md: 0.875rem;
-  --text-lg: 1.0625rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.625rem;
-  --text-angka: clamp(2rem, 4.4vw, 2.875rem);
+  --tinggi-isi: 1.65;
 
-  /* jarak 4pt */
-  --space-2xs: 4px;
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
+  /* ---- ruang ---- */
+  --r-1: 4px;
+  --r-2: 8px;
+  --r-3: 12px;
+  --r-4: 18px;
+  --r-5: 26px;
+  --r-6: 38px;
+  --r-7: 56px;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius: 14px;
+  --radius-kecil: 10px;
+  --lebar: 1180px;
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 120ms;
-  --dur-mid: 220ms;
+  --bayang: 0 1px 2px rgba(23, 33, 30, 0.05), 0 8px 24px -18px rgba(23, 33, 30, 0.28);
+  --bayang-angkat: 0 2px 4px rgba(23, 33, 30, 0.06), 0 18px 40px -24px rgba(23, 33, 30, 0.35);
 
-  --lebar-rel: 216px;
+  --transisi: 160ms ease;
 }

@@ -88,10 +88,13 @@
     return d.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
   }
 
+  let kabarTimer = null;
+
   function kabar(teks) {
     const el = document.getElementById("kabar");
-    el.textContent = "";
-    window.setTimeout(() => { el.textContent = teks; }, 30);
+    el.textContent = teks;
+    window.clearTimeout(kabarTimer);
+    kabarTimer = window.setTimeout(() => { el.textContent = ""; }, 4500);
   }
 
   const el = (id) => document.getElementById(id);
@@ -287,6 +290,8 @@
     const terisi = db.kamar.reduce((a, k) => a + k.terisi, 0);
     const persen = total ? Math.round((terisi / total) * 100) : 0;
     el("s-kamar").innerHTML = `${persen}<span class="stat__satuan">%</span>`;
+    const barKamar = el("s-kamar-bar");
+    if (barKamar) barKamar.style.width = persen + "%";
     el("s-kamar-ket").textContent = `${terisi} dari ${total} tempat tidur`;
 
     // antrean ringkas
@@ -303,13 +308,14 @@
           <span class="antrean__nomor">${k.no}</span>
           <span>
             <span class="antrean__nama">${p ? p.nama : "—"}</span>
-            <span class="antrean__poli">${poliDari(k.poliKode).nama} · ${k.dokter}</span>
+            <span class="antrean__poli">${poliDari(k.poliKode).nama} · ${k.dokter} · ${jamIndo(k.waktu)}</span>
           </span>
           <span class="chip" data-status="${k.status}">${k.status}</span>`;
         kotak.appendChild(baris);
       });
     }
-    el("ket-antrean").textContent = `${menunggu.length} pasien`;
+    const jmlMenunggu = menunggu.filter((k) => k.status === "menunggu").length;
+    el("ket-antrean").textContent = `${jmlMenunggu} menunggu · ${menunggu.length - jmlMenunggu} dipanggil`;
 
     // per poli
     const daftarPoli = el("poli-ringkas");
@@ -338,7 +344,7 @@
       baris.style.display = "grid";
       baris.style.gap = "4px";
       baris.innerHTML = `
-        <div style="display:flex;justify-content:space-between;gap:8px;font-size:var(--text-sm)">
+        <div style="display:flex;justify-content:space-between;gap:8px;font-size:var(--teks-sm)">
           <span>${k.nama}</span>
           <span class="daftar__nilai">${k.terisi}/${k.total}</span>
         </div>
@@ -370,7 +376,7 @@
     if (!kanvas || !kanvas.clientWidth) return;
     const rasio = window.devicePixelRatio || 1;
     const lebar = kanvas.clientWidth;
-    const tinggi = 150;
+    const tinggi = 180;
     kanvas.width = Math.round(lebar * rasio);
     kanvas.height = Math.round(tinggi * rasio);
     const k = kanvas.getContext("2d");
@@ -391,10 +397,10 @@
 
     const puncak = Math.max(4, ...hari.map((h) => h.jumlah));
     const kiri = 6;
-    const bawah = tinggi - 24;
+    const bawah = tinggi - 26;
     const lebarSlot = (lebar - kiri * 2) / hari.length;
 
-    k.strokeStyle = "rgba(25,32,45,0.10)";
+    k.strokeStyle = "rgba(23,33,30,0.09)";
     k.lineWidth = 1;
     for (let i = 1; i <= 3; i++) {
       const y = bawah - (bawah - 12) * (i / 4);
@@ -409,9 +415,9 @@
       const x = kiri + i * lebarSlot + lebarSlot * 0.18;
       const w = lebarSlot * 0.64;
       const y = bawah - tinggiBar;
-      k.fillStyle = h.iso === hariISO() ? "oklch(45% 0.09 195)" : "oklch(45% 0.09 195 / 0.35)";
+      k.fillStyle = h.iso === hariISO() ? "#1b5e4f" : "#bdd4cc";
       k.beginPath();
-      const r = 3;
+      const r = 4;
       k.moveTo(x, bawah);
       k.lineTo(x, y + r);
       k.quadraticCurveTo(x, y, x + r, y);
@@ -421,12 +427,12 @@
       k.closePath();
       k.fill();
 
-      k.fillStyle = "oklch(42% 0.018 245)";
-      k.font = "500 10px 'JetBrains Mono', monospace";
+      k.fillStyle = "#46524d";
+      k.font = "600 12px Lexend, system-ui, sans-serif";
       k.textAlign = "center";
       k.fillText(String(h.jumlah), x + w / 2, y - 5);
-      k.fillStyle = "oklch(58% 0.015 245)";
-      k.fillText(h.label, x + w / 2, tinggi - 6);
+      k.fillStyle = "#7c8781";
+      k.fillText(h.label, x + w / 2, tinggi - 5);
     });
   }
 
@@ -565,7 +571,7 @@
       const p = pasienDari(k.pasienId);
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td class="kuat" style="font-family:var(--font-mono)">${k.no}</td>
+        <td class="kuat">${k.no}</td>
         <td class="kuat">${p ? p.nama : "—"}</td>
         <td>${poliDari(k.poliKode).nama}</td>
         <td>${k.penjamin}</td>
@@ -613,7 +619,7 @@
       const p = pasienDari(k.pasienId);
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td class="kuat" style="font-family:var(--font-mono)">${k.no}</td>
+        <td class="kuat">${k.no}</td>
         <td class="kuat">${p ? p.nama : "—"}</td>
         <td>${poliDari(k.poliKode).nama}</td>
         <td>${k.dokter}</td>
@@ -732,10 +738,7 @@
           <span class="antrean__poli">${poliDari(k.poliKode).nama} · ${umur(p?.lahir) ?? "—"} th</span>
         </span>
         <span class="chip" data-status="${k.status}">${k.status}</span>`;
-      if (k.id === pasienRekam) {
-        tombol.style.borderColor = "var(--teal)";
-        tombol.style.background = "var(--teal-soft)";
-      }
+      if (k.id === pasienRekam) tombol.classList.add("terpilih");
       tombol.addEventListener("click", () => {
         pasienRekam = k.id;
         resepDraft = [];
@@ -745,9 +748,16 @@
     });
   }
 
+  function aktifkanBorang(nilai) {
+    const form = el("borang-rekam");
+    if (!form) return;
+    form.querySelectorAll("input, select, textarea, button").forEach((m) => { m.disabled = !nilai; });
+  }
+
   function gambarRekam() {
     gambarDaftarRekam();
     const k = db.kunjungan.find((x) => x.id === pasienRekam);
+    aktifkanBorang(Boolean(k));
     if (!k) {
       el("r-nama").textContent = "Belum ada pasien dipilih";
       el("r-meta").textContent = "Pilih dari daftar di samping";
@@ -780,7 +790,7 @@
         const icd = ICD.find((d) => d.kode === r.rm?.diagnosa);
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td style="font-family:var(--font-mono)">${tanggalIndo(r.tanggal)}</td>
+          <td>${tanggalIndo(r.tanggal)}</td>
           <td>${poliDari(r.poliKode).nama}</td>
           <td>${icd ? icd.nama : "—"}</td>
           <td>${r.dokter}</td>`;
@@ -888,7 +898,7 @@
       const [status, label] = statusStok(o);
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td style="font-family:var(--font-mono)">${o.kode}</td>
+        <td>${o.kode}</td>
         <td class="kuat">${o.nama}</td>
         <td>${o.satuan}</td>
         <td class="angka">${o.stok}</td>
@@ -926,7 +936,7 @@
         const o = obatDari(r.kode);
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td style="font-family:var(--font-mono)">${i === 0 ? k.no : ""}</td>
+          <td>${i === 0 ? k.no : ""}</td>
           <td>${i === 0 ? (p ? p.nama : "—") : ""}</td>
           <td class="kuat">${o.nama}</td>
           <td class="angka">${r.jumlah} ${o.satuan}</td>
@@ -983,10 +993,7 @@
       tombol.className = "antrean__baris";
       tombol.style.textAlign = "left";
       tombol.style.cursor = "pointer";
-      if (k.id === kasirAktif) {
-        tombol.style.borderColor = "var(--teal)";
-        tombol.style.background = "var(--teal-soft)";
-      }
+      if (k.id === kasirAktif) tombol.classList.add("terpilih");
       tombol.innerHTML = `
         <span class="antrean__nomor">${k.no}</span>
         <span>
@@ -1075,9 +1082,21 @@
 
   document.getElementById("buka-farmasi")?.addEventListener("click", () => bukaPanel("farmasi"));
 
+  function jamKepala() {
+    const kini = new Date();
+    const hari = document.getElementById("tanggal-hari");
+    const jam = document.getElementById("jam-sekarang");
+    if (hari) hari.textContent = kini.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    if (jam) jam.textContent = kini.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB";
+  }
+
+  jamKepala();
+  window.setInterval(jamKepala, 20000);
+
   isiPilihanPoli();
   isiPilihanDiagnosa();
   isiPilihanObat();
+  aktifkanBorang(false);
   gambarSemua();
 
   window.addEventListener("resize", () => {
