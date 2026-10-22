@@ -745,9 +745,19 @@ input[aria-invalid="true"] { border-color: var(--merah); box-shadow: 0 0 0 3px v
     text-align: center;
   }
   .nav-rel button svg { width: 18px; height: 18px; }
-  .nav-rel__lencana { position: absolute; margin: 0; transform: translate(14px, -12px); }
+  .nav-rel button { position: relative; }
+  .nav-rel__lencana {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    margin: 0;
+    transform: none;
+    min-width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
 
-  .utama { padding-bottom: 68px; }
+  .utama { padding-bottom: 84px; }
   .isi { padding: var(--space-md); }
   .puncak { padding: var(--space-sm) var(--space-md); }
 
