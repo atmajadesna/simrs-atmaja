@@ -1,0 +1,72 @@
+/* Hallmark · macrostructure: Bento Grid · tone: clinical-utilitarian · anchor hue: teal
+ * theme: Cobalt (tuned) · paper oklch(97.5% 0.005 220) · accent oklch(45% 0.09 195)
+ * display: Space Grotesk · body: Space Grotesk · mono: JetBrains Mono
+ * Hallmark · pre-emit critique: P5 H4 E4 S5 R5 V4
+ */
+
+:root {
+  /* kertas klinis */
+  --paper: oklch(97.5% 0.005 220);
+  --paper-2: oklch(94.5% 0.008 220);
+  --paper-3: oklch(90% 0.01 220);
+  --putih: oklch(100% 0 0);
+
+  /* tinta */
+  --ink: oklch(25% 0.02 245);
+  --ink-2: oklch(42% 0.018 245);
+  --ink-3: oklch(58% 0.015 245);
+
+  /* aksen */
+  --teal: oklch(45% 0.09 195);
+  --teal-terang: oklch(58% 0.1 195);
+  --teal-soft: oklch(45% 0.09 195 / 0.1);
+  --biru: oklch(50% 0.12 255);
+  --biru-soft: oklch(50% 0.12 255 / 0.1);
+
+  /* status */
+  --hijau: oklch(48% 0.11 155);
+  --hijau-soft: oklch(48% 0.11 155 / 0.12);
+  --amber: oklch(62% 0.13 75);
+  --amber-soft: oklch(62% 0.13 75 / 0.14);
+  --merah: oklch(52% 0.17 25);
+  --merah-soft: oklch(52% 0.17 25 / 0.12);
+
+  /* garis */
+  --line: oklch(25% 0.02 245 / 0.12);
+  --line-strong: oklch(25% 0.02 245 / 0.24);
+  --focus: oklch(48% 0.12 250);
+
+  /* huruf */
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* ukuran */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-md: 0.875rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.625rem;
+  --text-angka: clamp(2rem, 4.4vw, 2.875rem);
+
+  /* jarak 4pt */
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-mid: 220ms;
+
+  --lebar-rel: 216px;
+}

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIMRS Atmaja — RS Atmaja Wonogiri</title>
+<meta name="description" content="Sistem informasi rumah sakit: pendaftaran pasien, antrean poliklinik, rekam medis, farmasi, dan kasir. Demo berjalan di peramban dengan data contoh.">
+<meta name="theme-color" content="#0f766e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=2">
+<meta property="og:title" content="SIMRS Atmaja — RS Atmaja Wonogiri">
+<meta property="og:description" content="Pendaftaran, antrean poli, rekam medis, farmasi, dan kasir dalam satu alur.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://atmajadesna.github.io/simrs-atmaja/">
+</head>
+<body>
+
+<div class="aplikasi">
+
+  <aside class="rel" aria-label="Navigasi sistem">
+    <a class="merek" href="#" aria-label="RS Atmaja Wonogiri">
+      <span class="merek__lambang" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </span>
+      <span class="merek__teks">
+        <span class="merek__nama">RS Atmaja Wonogiri</span>
+        <span class="merek__sub">SIMRS · v1.0</span>
+      </span>
+    </a>
+
+    <nav class="nav-rel" id="nav" aria-label="Menu utama">
+      <button type="button" data-panel="beranda" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10l8-6 8 6v9a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+        Beranda
+      </button>
+      <button type="button" data-panel="pendaftaran">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Pendaftaran
+      </button>
+      <button type="button" data-panel="antrean">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        Antrean Poli
+        <span class="nav-rel__lencana" id="lencana-antrean" hidden>0</span>
+      </button>
+      <button type="button" data-panel="rekam">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h6M9 16h4"/></svg>
+        Rekam Medis
+      </button>
+      <button type="button" data-panel="farmasi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V5h6v3M12 12v4M10 14h4"/></svg>
+        Farmasi
+      </button>
+      <button type="button" data-panel="kasir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/></svg>
+        Kasir
+      </button>
+    </nav>
+
+    <div class="rel__kaki">
+      <span>Simulasi alur rumah sakit.</span>
+      <span>Data contoh, bukan data pasien nyata.</span>
+      <span>Semua tersimpan di peramban ini.</span>
+    </div>
+  </aside>
+
+  <div class="utama">
+
+    <header class="puncak">
+      <div class="puncak__judul">
+        <h1 id="judul-panel">Beranda</h1>
+        <p><span id="sub-panel">Ringkasan layanan hari ini</span> · <span id="waktu-data">—</span></p>
+      </div>
+      <div class="puncak__kanan">
+        <span class="tanda-demo">demo · data contoh</span>
+        <button class="tombol tombol--sunyi tombol--kecil" type="button" id="reset">Kembalikan data awal</button>
+      </div>
+    </header>
+
+    <main class="isi" id="isi">
+
+      <!-- ============ BERANDA ============ -->
+      <section class="panel" data-panel="beranda" data-tampil="ya" aria-label="Beranda">
+        <div class="bento">
+          <article class="kartu kartu--stat">
+            <div class="kartu__kepala"><span class="kartu__judul">Pendaftaran</span></div>
+            <p class="stat" id="s-daftar">0</p>
+            <p class="kartu__ket">pasien hari ini</p>
+          </article>
+          <article class="kartu kartu--stat">
+            <div class="kartu__kepala"><span class="kartu__judul">Menunggu</span></div>
+            <p class="stat" id="s-menunggu">0</p>
+            <p class="kartu__ket">di ruang tunggu</p>
+          </article>
+          <article class="kartu kartu--stat">
+            <div class="kartu__kepala"><span class="kartu__judul">Kamar terisi</span></div>
+            <p class="stat" id="s-kamar">0<span class="stat__satuan">%</span></p>
+            <p class="kartu__ket" id="s-kamar-ket">—</p>
+          </article>
+          <article class="kartu kartu--stat">
+            <div class="kartu__kepala"><span class="kartu__judul">Resep menunggu</span></div>
+            <p class="stat" id="s-resep">0</p>
+            <p class="kartu__ket">belum diserahkan</p>
+          </article>
+
+          <article class="kartu kartu--antrean">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Antrean berjalan</span>
+              <span class="kartu__ket" id="ket-antrean">—</span>
+            </div>
+            <div class="antrean" id="antrean-ringkas"></div>
+          </article>
+
+          <article class="kartu kartu--poli">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Kunjungan per poli</span>
+              <span class="kartu__ket">hari ini</span>
+            </div>
+            <ul class="daftar" id="poli-ringkas"></ul>
+          </article>
+
+          <article class="kartu kartu--kamar">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Keterisian bangsal</span>
+              <span class="kartu__ket" id="ket-kamar">—</span>
+            </div>
+            <div id="kamar-list" style="display:grid;gap:10px"></div>
+          </article>
+
+          <article class="kartu kartu--farmasi">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Stok perlu ditambah</span>
+              <span class="kartu__ket" id="ket-farmasi">—</span>
+            </div>
+            <ul class="daftar" id="farmasi-ringkas"></ul>
+            <button class="tombol tombol--sunyi tombol--kecil" type="button" id="buka-farmasi" style="justify-self:start">Buka farmasi</button>
+          </article>
+
+          <article class="kartu kartu--grafik">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Kunjungan tujuh hari terakhir</span>
+              <span class="kartu__ket">jumlah pasien</span>
+            </div>
+            <canvas id="grafik" height="150" aria-label="Grafik kunjungan tujuh hari terakhir" style="width:100%;display:block"></canvas>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============ PENDAFTARAN ============ -->
+      <section class="panel" data-panel="pendaftaran" aria-label="Pendaftaran pasien">
+        <div class="dua dua--sempit">
+          <article class="kartu">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Pasien baru</span>
+              <span class="kartu__ket">loket 1</span>
+            </div>
+            <form class="borang" id="borang-daftar" novalidate>
+              <div class="borang__baris borang__baris--penuh">
+                <label for="f-nama">Nama lengkap</label>
+                <input type="text" id="f-nama" name="nama" autocomplete="off" required placeholder="Sesuai KTP">
+                <p class="galat-teks" id="e-nama" hidden></p>
+              </div>
+              <div class="borang__baris">
+                <label for="f-nik">NIK</label>
+                <input type="text" id="f-nik" name="nik" inputmode="numeric" maxlength="16" placeholder="16 angka">
+                <p class="galat-teks" id="e-nik" hidden></p>
+              </div>
+              <div class="borang__baris">
+                <label for="f-lahir">Tanggal lahir</label>
+                <input type="date" id="f-lahir" name="lahir">
+              </div>
+              <div class="borang__baris">
+                <label for="f-jk">Jenis kelamin</label>
+                <select id="f-jk" name="jk">
+                  <option value="L">Laki-laki</option>
+                  <option value="P">Perempuan</option>
+                </select>
+              </div>
+              <div class="borang__baris">
+                <label for="f-telp">Telepon</label>
+                <input type="tel" id="f-telp" name="telp" inputmode="numeric" placeholder="08…">
+              </div>
+              <div class="borang__baris borang__baris--penuh">
+                <label for="f-penjamin">Penjamin</label>
+                <select id="f-penjamin" name="penjamin">
+                  <option value="Umum">Umum (bayar sendiri)</option>
+                  <option value="BPJS">BPJS Kesehatan</option>
+                  <option value="Asuransi">Asuransi swasta</option>
+                </select>
+              </div>
+              <div class="borang__baris">
+                <label for="f-poli">Poliklinik</label>
+                <select id="f-poli" name="poli"></select>
+              </div>
+              <div class="borang__baris">
+                <label for="f-dokter">Dokter</label>
+                <select id="f-dokter" name="dokter"></select>
+              </div>
+              <div class="borang__baris borang__baris--penuh">
+                <label for="f-keluhan">Keluhan utama</label>
+                <textarea id="f-keluhan" name="keluhan" placeholder="Ditulis singkat, misalnya: demam tiga hari, batuk kering"></textarea>
+              </div>
+              <div class="borang__baris borang__baris--penuh baris-tombol">
+                <button class="tombol" type="submit">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  Daftarkan &amp; ambil nomor
+                </button>
+                <span class="bantuan">Nomor antrean dibuat otomatis per poli.</span>
+              </div>
+            </form>
+          </article>
+
+          <div style="display:grid;gap:var(--space-md)">
+            <article class="kartu" id="kartu-tiket" hidden>
+              <div class="kartu__kepala">
+                <span class="kartu__judul">Nomor antrean</span>
+                <span class="kartu__ket" id="tiket-waktu">—</span>
+              </div>
+              <p class="stat" id="tiket-nomor" style="font-size:3rem">—</p>
+              <ul class="daftar" id="tiket-rinci"></ul>
+              <div class="baris-tombol">
+                <button class="tombol tombol--sunyi tombol--kecil" type="button" id="tiket-cetak">Cetak nomor</button>
+                <button class="tombol tombol--sunyi tombol--kecil" type="button" id="tiket-antrean">Lihat antrean</button>
+              </div>
+            </article>
+
+            <article class="kartu">
+              <div class="kartu__kepala">
+                <span class="kartu__judul">Pasien terdaftar hari ini</span>
+                <span class="kartu__ket" id="ket-terdaftar">—</span>
+              </div>
+              <div class="tabel-bungkus">
+                <table>
+                  <thead>
+                    <tr><th>No.</th><th>Nama</th><th>Poli</th><th>Penjamin</th><th class="angka">Umur</th></tr>
+                  </thead>
+                  <tbody id="tabel-terdaftar"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ANTREAN ============ -->
+      <section class="panel" data-panel="antrean" aria-label="Antrean poliklinik">
+        <article class="kartu">
+          <div class="kartu__kepala">
+            <span class="kartu__judul">Papan antrean</span>
+            <div class="baris-tombol">
+              <select id="filter-poli" aria-label="Saring poli" style="width:auto;min-height:30px"></select>
+              <button class="tombol tombol--sunyi tombol--kecil" type="button" id="panggil-berikut">Panggil berikutnya</button>
+            </div>
+          </div>
+          <div class="papan-antrean" id="papan-antrean"></div>
+        </article>
+
+        <article class="kartu">
+          <div class="kartu__kepala">
+            <span class="kartu__judul">Daftar tunggu</span>
+            <span class="kartu__ket" id="ket-tunggu">—</span>
+          </div>
+          <div class="tabel-bungkus">
+            <table>
+              <thead>
+                <tr><th>No.</th><th>Nama</th><th>Poli</th><th>Dokter</th><th>Status</th><th>Tindakan</th></tr>
+              </thead>
+              <tbody id="tabel-antrean"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ REKAM MEDIS ============ -->
+      <section class="panel" data-panel="rekam" aria-label="Rekam medis">
+        <div class="dua dua--sempit">
+          <article class="kartu">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Pilih pasien</span>
+              <span class="kartu__ket" id="ket-rekam">—</span>
+            </div>
+            <div class="antrean" id="daftar-rekam"></div>
+          </article>
+
+          <div style="display:grid;gap:var(--space-md)">
+            <article class="kartu">
+              <div class="rekam__kepala">
+                <div class="avatar" id="r-avatar" aria-hidden="true">—</div>
+                <div>
+                  <p class="rekam__nama" id="r-nama">Belum ada pasien dipilih</p>
+                  <p class="rekam__meta" id="r-meta">Pilih dari daftar di samping</p>
+                </div>
+              </div>
+
+              <form class="borang" id="borang-rekam" novalidate>
+                <div class="borang__baris borang__baris--penuh">
+                  <label for="r-keluhan">Keluhan &amp; anamnesis</label>
+                  <textarea id="r-keluhan" placeholder="Demam tiga hari, batuk kering, nafsu makan turun"></textarea>
+                </div>
+                <div class="borang__baris">
+                  <label for="v-td">Tekanan darah (mmHg)</label>
+                  <input type="text" id="v-td" placeholder="120/80">
+                </div>
+                <div class="borang__baris">
+                  <label for="v-nadi">Nadi (x/menit)</label>
+                  <input type="number" id="v-nadi" min="20" max="220" placeholder="88">
+                </div>
+                <div class="borang__baris">
+                  <label for="v-suhu">Suhu (°C)</label>
+                  <input type="number" id="v-suhu" step="0.1" min="30" max="45" placeholder="38.2">
+                </div>
+                <div class="borang__baris">
+                  <label for="v-spo2">SpO₂ (%)</label>
+                  <input type="number" id="v-spo2" min="50" max="100" placeholder="98">
+                </div>
+                <div class="borang__baris borang__baris--penuh">
+                  <label for="r-diagnosa">Diagnosa (ICD-10 ringkas)</label>
+                  <select id="r-diagnosa"></select>
+                </div>
+                <div class="borang__baris borang__baris--penuh">
+                  <label for="r-obat">Resep</label>
+                  <div class="baris-tombol">
+                    <select id="r-obat" style="flex:1;min-width:150px"></select>
+                    <input type="number" id="r-jumlah" min="1" max="30" value="10" aria-label="Jumlah obat" style="width:84px">
+                    <button class="tombol tombol--sunyi tombol--kecil" type="button" id="tambah-obat">Tambah</button>
+                  </div>
+                  <ul class="daftar" id="daftar-resep" style="margin-top:8px"></ul>
+                </div>
+                <div class="borang__baris borang__baris--penuh baris-tombol">
+                  <button class="tombol" type="submit" id="simpan-rekam">Simpan rekam medis</button>
+                  <span class="bantuan">Menyimpan akan membuat tagihan di kasir.</span>
+                </div>
+              </form>
+            </article>
+
+            <article class="kartu">
+              <div class="kartu__kepala">
+                <span class="kartu__judul">Riwayat kunjungan</span>
+                <span class="kartu__ket" id="ket-riwayat">—</span>
+              </div>
+              <div class="tabel-bungkus">
+                <table>
+                  <thead><tr><th>Tanggal</th><th>Poli</th><th>Diagnosa</th><th>Dokter</th></tr></thead>
+                  <tbody id="tabel-riwayat"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FARMASI ============ -->
+      <section class="panel" data-panel="farmasi" aria-label="Farmasi">
+        <article class="kartu">
+          <div class="kartu__kepala">
+            <span class="kartu__judul">Stok obat</span>
+            <span class="kartu__ket" id="ket-obat">—</span>
+          </div>
+          <div class="tabel-bungkus">
+            <table>
+              <thead>
+                <tr><th>Kode</th><th>Nama obat</th><th>Satuan</th><th class="angka">Stok</th><th class="angka">Minimum</th><th>Status</th><th>Tindakan</th></tr>
+              </thead>
+              <tbody id="tabel-obat"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="kartu">
+          <div class="kartu__kepala">
+            <span class="kartu__judul">Resep menunggu diserahkan</span>
+            <span class="kartu__ket" id="ket-resep">—</span>
+          </div>
+          <div class="tabel-bungkus">
+            <table>
+              <thead><tr><th>No.</th><th>Pasien</th><th>Obat</th><th class="angka">Jumlah</th><th>Tindakan</th></tr></thead>
+              <tbody id="tabel-resep"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ KASIR ============ -->
+      <section class="panel" data-panel="kasir" aria-label="Kasir">
+        <div class="dua dua--sempit">
+          <article class="kartu">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Belum dibayar</span>
+              <span class="kartu__ket" id="ket-kasir">—</span>
+            </div>
+            <div class="antrean" id="daftar-kasir"></div>
+          </article>
+
+          <article class="kartu">
+            <div class="kartu__kepala">
+              <span class="kartu__judul">Rincian tagihan</span>
+              <span class="kartu__ket" id="tagihan-nomor">—</span>
+            </div>
+            <div id="tagihan-isi">
+              <div class="kosong">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/></svg>
+                <span>Pilih pasien di sebelah kiri untuk melihat tagihan.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="kaki">
+      <span>RS Atmaja Wonogiri · SIMRS demo · data contoh tersimpan di peramban</span>
+      <span>Dibuat dengan HTML, CSS, JavaScript tanpa pustaka</span>
+    </footer>
+  </div>
+</div>
+
+<p class="sr" id="kabar" role="status" aria-live="polite"></p>
+
+<noscript>
+  <p style="max-width: 60ch; margin: 24px auto; padding: 16px; border: 1px solid #999;">
+    Sistem ini memerlukan JavaScript. Aktifkan JavaScript di peramban, lalu muat ulang halaman.
+  </p>
+</noscript>
+
+<script src="app.js?v=2" defer></script>
+</body>
+</html>
